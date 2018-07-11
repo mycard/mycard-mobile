@@ -7,6 +7,11 @@
   <meta name="theme-color" content="#673ab7">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) { 
+      alert(message);
+    }
+  </script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29582484-4"></script>
   <script>
@@ -14,15 +19,6 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'UA-29582484-4');
-  </script>
-  <script>
-    window.onerror = function(message, source, lineno, colno, error) { 
-      alert(`出错了, 请联系 QQ 474078233
-        ${message}
-        ${source}:${lineno}:${colno}
-
-        ${error.stack}`)
-    }
   </script>
 </head>
 <body>
