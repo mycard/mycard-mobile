@@ -21,6 +21,7 @@
     {
       "name": "api-freshness",
       "urls": [
+        "https://api.mycard.moe/apps.json",
         "https://ygobbs.com/top/quarterly.json",
         "https://mycard.moe/ygopro/api/history",
         "https://api.mycard.moe/ygopro/arena/user"
@@ -35,7 +36,6 @@
     {
       "name": "api-performance",
       "urls": [
-        "https://api.mycard.moe/apps.json",
         "https://cdn01.moecube.com/avatars/*",
         "https://ygobbs.com/user_avatar/*",
         "https://ygobbs.com/uploads/**"
