@@ -133,7 +133,7 @@ export class YGOProService {
     {
       id: 'tiramisu',
       url: 'wss://tiramisu.mycard.moe:7923',
-      address: '212.64.102.52',
+      address: 'tiramisu.mycard.moe',
       port: 7911,
       custom: true,
       replay: true
@@ -141,7 +141,7 @@ export class YGOProService {
     {
       id: 'tiramisu-athletic',
       url: 'wss://tiramisu.mycard.moe:8923',
-      address: '212.64.102.52',
+      address: 'tiramisu.mycard.moe',
       port: 8911,
       custom: false,
       replay: true
