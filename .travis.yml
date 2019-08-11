@@ -13,4 +13,4 @@ deploy:
   skip_cleanup: true
   local-dir: dist
   upload-dir: mobile
-  endpoint: oss-cn-hangzhou.aliyuncs.com
+  endpoint: https://minio.mycard.moe:9000
