@@ -1,21 +1,16 @@
 language: node_js
 node_js: node
-env:
-  secure: BDiZA4i/3yy5tOeDAY/R1Lwv8BIV9u75kQRESvTq/ec8wHz5uHidfw2ov4qvhZdfiVnv78S034moipwT8GlShYm1ZVWANOITFKSYvniCdLG5u5Bfwuk6QsneVer1f3Ye5lfrJH8st1V6hyK8wzCNbT+gSsUkr6pvBrtN/o94Tw0uuVjae+UusWepkVFv6mTKMexWwB+89nyn6/Q2ThgREz+6X1Ka17SisrLlbhE/2RK9UJxXjaoIljsKw2cs2GFcUYnlvOLFSQdBNpQ0hC/1QVqYP9MKok4o9ZeHx+TscQ3VaseyqcyoORhm7efchkflNhMwYOZTXpF7KMuukfjir07+S2e+j1Wb2jkler9SAAjA/SJlOp323an3mD8SCiHNncUs0bs12u7BBWwvnLTRMNxEK6GM/De7lH5wrZ8e8yzWSFMaQ0C3uEes8omUTm6eFHAFMGd/dQRwKeEu6bm+vhFBvH2NJmVNaTU6ESBSPdH5AqsiLMFNa9AQFBV6FxJS4jSF56qpxX/7jv+FKsLO6iKv6qalLNO4J7M6KBKhcWfPl2UnI+SqEEef694SoG4KWUntk1LT7curOTc35gRjVrC9GigFr9UQMzy/9o4vGD1rzud8ElGtNRij4Xd8gkTttXevPcl2jBdA/f3ZLNSozXZ04RsKbLQ68LOpD3i1MHE=
 cache:
   directories:
     - "$HOME/.npm"
-
 script: npm run build
-
-before_deploy:
-  - curl --location --retry 5 --output ossutil "http://ossutil-version-update.oss-cn-hangzhou.aliyuncs.com/$(curl http://ossutil-version-update.oss-cn-hangzhou.aliyuncs.com/ossutilversion)/ossutil64"
-  - chmod +x ossutil
-  - ./ossutil config --endpoint oss-cn-hangzhou.aliyuncs.com --access-key-id $ALIYUN_ID
-    --access-key-secret $ALIYUN_SECRET
 deploy:
-  provider: script
-  script: ./ossutil cp -rf dist oss://mycard/mobile
+  provider: s3
+  access_key_id: ztDf0fCxr0eCgSIi
+  secret_access_key:
+    secure: pjWuLKCdhR8B4RqaF+filHCBiyQWhUJa/nXQp/2mzzzxtkYiP8POP2zTuw6PCHWeIJz2lTzPmhxShOwoPGx3YdwHEjZEjP/B3xX0PsI+ZDxFfNskFClglqbfAO3f29YwBtEeFoBukWWq5tgiGrCOyIVIdtJyqIpl+lgrSxk6JuaXJ1s+7wy+C2BIGVeoGxuBhBIfKrBHyvusDxvCa+/KXuCfduiscnSPtLYIC4qTXbgiUv3eOrj5AygBlzQ5MUXYG8oIVgWoKv8E2gk7JmhDfntNIhIwBgI0ZXVUFkwwtwxAOc2BIQUEE68oG8gonSbkCq+Q8g74xiO9fXxbDT1Z5aHIHZyMzVTTzA8lAE2F6259D2ResxQy0FkU7Ai3eza9ESPbxKORZSgHxs4jdh9BhMpWyX8Kj0mzaf4xh8yJ0Sbg75Io2PNFHUE+Q7U5IguQ6yZatRbTDOQ58mHJEd8tXR7kYB0C98Jv1Z664Pa3w9/YHdlSWW7xSlGMAz/aGCtszdh+tV9X52oQSzAJmxyKs0WwmLjUt52v7R0WftOhlUzltzP/PgR6eaq86FFxQycvBqAHmVRSQsdsuC0bb9j2bQG9zWcmhxoDGaVDk7Cmx0yBRhvoKrWonalXgswHmZI31HADTihkbH/mT6NE39XMsdtBoAcFwPrfqCmDfNTMmb4=
+  bucket: mycard
   skip_cleanup: true
-  on:
-    branch: master
+  local-dir: dist
+  upload-dir: mobile
+  endpoint: oss-cn-hangzhou.aliyuncs.com
