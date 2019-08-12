@@ -14,3 +14,7 @@ deploy:
   local-dir: dist
   upload-dir: mobile
   endpoint: https://minio.mycard.moe:9000
+notifications:
+  webhooks:
+    urls: https://api.mycard.moe/notify/travis
+    on_cancel: never
