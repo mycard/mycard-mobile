@@ -37,7 +37,7 @@ export class StorageService {
       return;
     }
 
-    // console.log('sync', 'start');
+    console.log('sync_start');
 
     const root = path.join('/', this.app_id);
 
