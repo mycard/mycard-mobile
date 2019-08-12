@@ -117,7 +117,7 @@ export class StorageService {
 
   async download(local_path: string, remote_path: string, index_path: string, time: number) {
     this.working.next(true);
-    // console.log('download', local_path, remote_path, index_path, time);
+    console.log('download', local_path, remote_path, index_path, time);
     const data: ArrayBuffer = await this.client.getFileContents(remote_path);
     window.ygopro.writeFile(local_path, Buffer.from(data).toString('base64'));
     window.ygopro.setFileLastModified(local_path, time);
@@ -127,7 +127,7 @@ export class StorageService {
 
   async upload(local_path: string, remote_path: string, index_path: string) {
     this.working.next(true);
-    // console.log('upload', local_path, remote_path, index_path);
+    console.log('upload', local_path, remote_path, index_path);
     const data = this.read_local(local_path);
     await this.client.putFileContents(remote_path, data);
     const item: FileStats = await this.client.stat(remote_path);
@@ -143,12 +143,14 @@ export class StorageService {
 
   remove_local(local_path: string, remote_path: string, index_path: string) {
     this.working.next(true);
+    console.log('remove_local', local_path, remote_path, index_path);
     window.ygopro.unlink(local_path);
     localStorage.removeItem(index_path);
   }
 
   async remove_remote(local_path: string, remote_path: string, index_path: string) {
     this.working.next(true);
+    console.log('remove_remote', local_path, remote_path, index_path);
     await this.client.deleteFile(remote_path);
     localStorage.removeItem(index_path);
   }
