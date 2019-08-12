@@ -91,7 +91,7 @@ export class StorageService {
       }
     }
 
-    // console.log('远端文件扫描完毕', this.local_files());
+    console.log('远端文件扫描完毕', this.local_files());
 
     for (const local_path of this.local_files()) {
       const remote_path = path.join(root, local_path);
@@ -178,7 +178,7 @@ export class StorageService {
 
   async *walk(dir: string): AsyncIterable<Stats> {
     const items: Stats[] = await this.client.getDirectoryContents(dir);
-    // console.log('取远端目录', dir, items);
+    console.log('取远端目录', dir, items);
     for (const item of items) {
       if (item.type === 'directory') {
         yield* this.walk(item.filename);
