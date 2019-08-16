@@ -198,7 +198,7 @@ export class YGOProService {
     refresh
       .pipe(
         mergeMap(() =>
-          this.http.get<{ data: any[] }>('https://mycard.moe/ygopro/api/history', {
+          this.http.get<{ data: any[] }>('https://api.mycard.moe/ygopro/arena/history', {
             params: { username: this.login.user.username, type: '0', page_num: '1' }
           })
         ),

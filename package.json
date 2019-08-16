@@ -1,12 +1,12 @@
 {
   "name": "mycard-mobile",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "license": "UNLISENCED",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --host 0.0.0.0",
-    "build": "ng build --i18n-locale zh-CN --prod --source-map --base-href /mobile/ --deploy-url https://mycard.minio.mycard.moe:9000/mobile/ && npm run fuck",
-    "build:dev": "ng build --i18n-locale zh-CN --prod --source-map --base-href /mobile2/ --deploy-url https://mycard.minio.mycard.moe:9000/mobile2/ && npm run fuck",
+    "build": "ng build --i18n-locale zh-CN --prod --source-map --base-href /mobile/ --deploy-url https://cdn01.moecube.com/mobile/ && npm run fuck",
+    "build:dev": "ng build --i18n-locale zh-CN --prod --source-map --base-href /mobile2/ --deploy-url https://cdn01.moecube.com/mobile2/ && npm run fuck",
     "fuck": "patch -i service-worker.patch dist/ngsw-worker.js",
     "postinstall": "patch -i webpack.patch -p0 -t",
     "lint": "ng lint"
