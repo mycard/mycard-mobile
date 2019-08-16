@@ -9,7 +9,7 @@ import { MatchDialogComponent } from './match-dialog/match-dialog.component';
 import { ResultDialogComponent } from './result-dialog/result-dialog.component';
 import { StorageService } from './storage.service';
 import { HttpClient } from '@angular/common/http';
-import { catchError, filter, map, mergeMap, scan, startWith } from 'rxjs/internal/operators';
+import { catchError, filter, map, mergeMap, publishLast, refCount, scan, startWith } from 'rxjs/internal/operators';
 import { webSocket } from 'rxjs/webSocket';
 
 export interface User {
@@ -149,7 +149,7 @@ export class YGOProService {
   ];
 
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
-    const app = this.http.get<App[]>('https://api.mycard.moe/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!));
+    const app = this.http.get<App[]>('https://api.mycard.moe/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
     this.news = app
       .pipe(
         map(_app =>
