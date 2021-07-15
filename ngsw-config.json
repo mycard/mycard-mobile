@@ -37,6 +37,7 @@
       "name": "api-performance",
       "urls": [
         "https://cdn01.moecube.com/avatars/*",
+        "https://cdn02.moecube.com:444/avatars/*",
         "https://ygobbs.com/user_avatar/*",
         "https://ygobbs.com/uploads/**"
       ],
