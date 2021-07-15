@@ -1,0 +1,29 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_DEPTH: "1"
+
+build:
+  stage: build
+  dependencies: []
+  tags:
+    - linux
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+upload_to_minio:
+  stage: deploy
+  dependencies:
+    - build
+  tags:
+    - linux
+  script:
+    - aws s3 --endpoint=https://minio.mycard.moe:9000 sync --delete dist/ s3://mycard/mobile
+  only:
+    - master
