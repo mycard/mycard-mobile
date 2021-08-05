@@ -43,7 +43,7 @@ export class LobbyComponent {
     public storage: StorageService,
     private dialog: MatDialog
   ) {
-    const arena_url = new URL('https://sapi.moecube.com:444/ygopro/arena');
+    const arena_url = new URL('https://mycard.moe/ygopro/arena');
     arena_url.searchParams.set('sso', login.token);
     this.arena_url = arena_url.toString();
 
