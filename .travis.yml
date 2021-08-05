@@ -16,5 +16,5 @@ deploy:
   endpoint: https://minio.mycard.moe:9000
 notifications:
   webhooks:
-    urls: https://api.mycard.moe/notify/travis
+    urls: https://sapi.moecube.com:444/notify/travis
     on_cancel: never

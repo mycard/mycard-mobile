@@ -17,7 +17,7 @@ const offset = new Date().getTimezoneOffset() * 60 * second;
 })
 export class MatchDialogComponent implements OnInit, OnDestroy {
   expect_wait = this.http
-    .get('https://api.mycard.moe/ygopro/match/stats/' + this.arena)
+    .get('https://sapi.moecube.com:444/ygopro/match/stats/' + this.arena)
     .pipe(map((data: number) => data * second + offset));
   actual_wait = timer(0, second).pipe(map(timestamp => timestamp * second + offset));
 
@@ -32,7 +32,7 @@ export class MatchDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.matching = this.http
-      .post<MatchResponse>('https://api.mycard.moe/ygopro/match', null, {
+      .post<MatchResponse>('https://sapi.moecube.com:444/ygopro/match', null, {
         headers: {
           Authorization: 'Basic ' + Buffer.from(this.login.user.username + ':' + this.login.user.external_id).toString('base64')
         },

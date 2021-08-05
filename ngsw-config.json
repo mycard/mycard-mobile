@@ -21,10 +21,10 @@
     {
       "name": "api-freshness",
       "urls": [
-        "https://api.mycard.moe/apps.json",
+        "https://sapi.moecube.com:444/apps.json",
         "https://ygobbs.com/top/quarterly.json",
         "https://mycard.moe/ygopro/api/history",
-        "https://api.mycard.moe/ygopro/arena/user"
+        "https://sapi.moecube.com:444/ygopro/arena/user"
       ],
       "cacheConfig": {
         "maxSize": 100,

@@ -27,7 +27,7 @@ type Stats = DirectoryStats | FileStats;
 export class StorageService {
   app_id = 'ygopro';
 
-  client = webdav('https://api.mycard.moe/storage/', this.login.user.username, this.login.user.external_id.toString());
+  client = webdav('https://sapi.moecube.com:444/storage/', this.login.user.username, this.login.user.external_id.toString());
   working = new BehaviorSubject(false);
 
   constructor(private login: LoginService) {}

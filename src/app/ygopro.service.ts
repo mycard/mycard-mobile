@@ -141,7 +141,7 @@ export class YGOProService {
     {
       id: 'tiramisu-athletic',
       url: 'wss://tiramisu.mycard.moe:8923',
-      address: 'tiramisu.mycard.moe',
+      address: 'tiramisu.sapi.moecube.com:444',
       port: 8911,
       custom: false,
       replay: true
@@ -149,7 +149,7 @@ export class YGOProService {
   ];
 
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
-    const app = this.http.get<App[]>('https://api.mycard.moe/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
+    const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
     this.news = app
       .pipe(
         map(_app =>
@@ -190,7 +190,7 @@ export class YGOProService {
     refresh
       .pipe(
         mergeMap(() =>
-          this.http.get<Points>('https://api.mycard.moe/ygopro/arena/user', { params: { username: this.login.user.username } })
+          this.http.get<Points>('https://sapi.moecube.com:444/ygopro/arena/user', { params: { username: this.login.user.username } })
         )
       )
       .subscribe(this.points);
@@ -198,7 +198,7 @@ export class YGOProService {
     refresh
       .pipe(
         mergeMap(() =>
-          this.http.get<{ data: any[] }>('https://api.mycard.moe/ygopro/arena/history', {
+          this.http.get<{ data: any[] }>('https://sapi.moecube.com:444/ygopro/arena/history', {
             params: { username: this.login.user.username, type: '0', page_num: '1' }
           })
         ),
