@@ -141,7 +141,7 @@ export class YGOProService {
     {
       id: 'tiramisu-athletic',
       url: 'wss://tiramisu.mycard.moe:8923',
-      address: 'tiramisu.sapi.moecube.com:444',
+      address: 'tiramisu.mycard.moe',
       port: 8911,
       custom: false,
       replay: true
