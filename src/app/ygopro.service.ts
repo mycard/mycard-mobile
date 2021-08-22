@@ -36,22 +36,27 @@ export interface Options {
   mode: number;
   rule: number;
   start_lp: number;
+  start_lp_tag: number;
   start_hand: number;
   draw_count: number;
-  enable_priority: boolean;
+  duel_rule: number;
   no_check_deck: boolean;
   no_shuffle_deck: boolean;
   lflist?: number;
   time_limit?: number;
+  auto_death: boolean;
 }
 
 export interface Server {
   id?: string;
+  name?: string;
   url?: string;
   address: string;
   port: number;
+  hidden?: boolean;
   custom?: boolean;
   replay?: boolean;
+  windbot?: string[];
 }
 
 interface News {
@@ -121,13 +126,15 @@ export class YGOProService {
     mode: 1,
     rule: 0,
     start_lp: 8000,
+    start_lp_tag: 16000,
     start_hand: 5,
     draw_count: 1,
-    enable_priority: false,
+    duel_rule: 5,
     no_check_deck: false,
     no_shuffle_deck: false,
     lflist: 0,
-    time_limit: 180
+    time_limit: 180,
+    auto_death: false
   };
   readonly servers: Server[] = [
     {
@@ -252,15 +259,15 @@ export class YGOProService {
   create_room(room: Room, host_password: string) {
     const options_buffer = Buffer.alloc(6);
     // 建主密码 https://docs.google.com/document/d/1rvrCGIONua2KeRaYNjKBLqyG9uybs9ZI-AmzZKNftOI/edit
-    options_buffer.writeUInt8((room.private ? 2 : 1) << 4, 1);
+    options_buffer.writeUInt8(((room.private ? 2 : 1) << 4) |
+      (room.options.duel_rule << 1) |
+      (room.options.auto_death ? 0x1 : 0), 1);
     options_buffer.writeUInt8(
-      (room.options.rule << 5) |
-        (room.options.mode << 3) |
-        (room.options.enable_priority ? 1 << 2 : 0) |
-        (room.options.no_check_deck ? 1 << 1 : 0) |
-        (room.options.no_shuffle_deck ? 1 : 0),
-      2
-    );
+      room.options.rule << 5 |
+      room.options.mode << 3 |
+      (room.options.no_check_deck ? 1 << 1 : 0) |
+      (room.options.no_shuffle_deck ? 1 : 0)
+      , 2);
     options_buffer.writeUInt16LE(room.options.start_lp, 3);
     options_buffer.writeUInt8((room.options.start_hand << 4) | room.options.draw_count, 5);
     let checksum = 0;

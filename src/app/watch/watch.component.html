@@ -47,13 +47,14 @@
     <ng-container matColumnDef="extra">
       <mat-header-cell *matHeaderCellDef>额外选项</mat-header-cell>
       <mat-cell *matCellDef="let room">
-        <span *ngIf="room.options.rule != ygopro.default_options.rule">{{{'0': 'OCG', '1': 'TCG', '2': 'O/T', '3': '专有卡禁止'}[room.options.rule]}}</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule">{{{'0': 'OCG', '1': 'TCG', '2': 'O/T', '3': '专有卡禁止', '4': '简体中文'}[room.options.rule]}}</span>
         <span *ngIf="room.options.start_lp != ygopro.default_options.start_lp">{{room.options.start_lp}} LP</span>
         <span *ngIf="room.options.start_hand != ygopro.default_options.start_hand">{{room.options.start_hand}} 初始</span>
         <span *ngIf="room.options.draw_count != ygopro.default_options.draw_count">{{room.options.draw_count}} 抽卡</span>
-        <span *ngIf="room.options.enable_priority != ygopro.default_options.enable_priority">旧规则</span>
+        <span *ngIf="room.options.duel_rule != ygopro.default_options.duel_rule">大师规则{{room.options.duel_rule}}</span>
         <span *ngIf="room.options.no_check_deck != ygopro.default_options.no_check_deck">不检查</span>
         <span *ngIf="room.options.no_shuffle_deck != ygopro.default_options.no_shuffle_deck">不洗卡</span>
+        <span *ngIf="!!room.options.auto_death">自动加时赛</span>
       </mat-cell>
     </ng-container>
 
