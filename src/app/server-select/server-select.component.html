@@ -1,0 +1,8 @@
+环境: <mat-form-field appearance='standard'>
+<!--  <mat-label>Favorite food</mat-label>-->
+  <mat-select>
+    <mat-option *ngFor='let server of servers' [value]='server.id'>
+      {{server.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

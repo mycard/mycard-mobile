@@ -2,3 +2,7 @@ button {
   margin-left: -8px;
   margin-right: 24px;
 }
+
+span {
+  flex: 1
+}
