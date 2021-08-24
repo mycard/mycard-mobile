@@ -140,7 +140,13 @@ export class YGOProService {
   serversPromise: Promise<Server[]>;
   servers: Server[] = [];
   selectableServers: Server[] = [];
-  currentServer: Server;
+  get currentServer(): Server {
+    return this.serverForm.value;
+  }
+
+  set currentServer(server: Server) {
+    this.serverForm.setValue(server);
+  }
 
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
     const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(
@@ -253,8 +259,8 @@ export class YGOProService {
       return condition(s);
     });
     if (!this.currentServer || !this.selectableServers.includes(this.currentServer)) {
-      this.currentServer = this.selectableServers[0];
-      this.serverForm.setValue(this.currentServer);
+      //this.currentServer = this.selectableServers[0];
+      this.serverForm.setValue(this.selectableServers[0]);
     }
   }
 

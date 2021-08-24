@@ -1,6 +1,6 @@
 环境:
 <mat-form-field appearance='standard'>
-  <mat-select [formControl]='ygopro.serverForm' [(ngModel)]='ygopro.currentServer'>
+  <mat-select [formControl]='ygopro.serverForm'>
     <mat-option *ngFor='let server of ygopro.selectableServers' [value]='server'>
       {{server.name}}
     </mat-option>
