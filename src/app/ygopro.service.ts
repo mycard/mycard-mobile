@@ -458,9 +458,10 @@ export class RoomListDataSource extends DataSource<Room> {
 
     return this.ygopro.serverForm.valueChanges.pipe(
       this.ygopro.serverForm.value ? startWith(this.ygopro.serverForm.value) : tap(),
-      switchMap(env =>
+      switchMap((env: Server) =>
         combineLatest(
-          [env].filter(s => s.url && (s.custom || s.replay)).map(server => {
+          // TODO: use env
+          this.ygopro.servers.filter(s => s.url && (s.custom || s.replay) && (env.id! === 'tiramisu' && s.id!.startsWith('tiramisu') || s === env)).map(server => {
             const url = new URL(server.url!);
             url.searchParams.set('filter', this.type);
             // 协议处理
