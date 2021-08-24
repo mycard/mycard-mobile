@@ -425,6 +425,9 @@ export class YGOProService {
       alert(JSON.stringify({ method: 'share', params: [text] }));
     }
   }
+  isRoomAvailableToDisplay(r: Room) {
+    return (r.arena && this.currentServer && this.currentServer.id === 'tiramisu') || r.server === this.currentServer;
+  }
 }
 
 type Message =
@@ -472,7 +475,8 @@ export class RoomListDataSource extends DataSource<Room> {
       // 筛选一下房间，只扔进去当前房间或者竞技匹配的
       // 房间排序
       map(rooms =>
-        sortBy(rooms.filter(r => (r.arena && this.ygopro.currentServer && this.ygopro.currentServer.id === 'tiramisu') || r.server === this.ygopro.currentServer), room => {
+        // TODO: reload server on change
+        sortBy(rooms.filter(r => this.ygopro.isRoomAvailableToDisplay(r)), room => {
           if (room.arena === 'athletic') {
             return 0;
           } else if (room.arena === 'entertain') {
