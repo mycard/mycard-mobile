@@ -140,6 +140,18 @@ export class YGOProService {
   selectableServers: Server[] = [];
   currentServer: Server;
 
+  reloadSelectableServers(condition: (server: Server) => boolean = () => true) {
+    this.selectableServers = this.servers.filter(s => {
+      if (s.hidden) {
+        return false;
+      }
+      return condition(s);
+    });
+    if(!this.currentServer || !this.selectableServers.includes(this.currentServer)) {
+      this.currentServer = this.selectableServers[0];
+    }
+  }
+
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
     const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
 
@@ -153,8 +165,7 @@ export class YGOProService {
 
     this.serversPromise.then((servers) => {
       this.servers = servers;
-      this.selectableServers = servers.filter(s => !s.hidden);
-      this.currentServer = this.selectableServers[0];
+      this.reloadSelectableServers();
     })
 
     this.news = app
@@ -461,7 +472,7 @@ export class RoomListDataSource extends DataSource<Room> {
       // 筛选一下房间，只扔进去当前房间或者竞技匹配的
       // 房间排序
       map(rooms =>
-        sortBy(rooms.filter(r => r.arena || r.server === this.ygopro.currentServer), room => {
+        sortBy(rooms.filter(r => (r.arena && this.ygopro.currentServer && this.ygopro.currentServer.id === 'tiramisu') || r.server === this.ygopro.currentServer), room => {
           if (room.arena === 'athletic') {
             return 0;
           } else if (room.arena === 'entertain') {

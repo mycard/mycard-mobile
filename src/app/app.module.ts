@@ -1,4 +1,4 @@
-import { ErrorHandler, isDevMode, NgModule, Provider } from '@angular/core';
+import { ErrorHandler, NgModule, Provider } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
