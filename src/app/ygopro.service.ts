@@ -9,8 +9,9 @@ import { MatchDialogComponent } from './match-dialog/match-dialog.component';
 import { ResultDialogComponent } from './result-dialog/result-dialog.component';
 import { StorageService } from './storage.service';
 import { HttpClient } from '@angular/common/http';
-import { catchError, filter, map, mergeMap, publishLast, refCount, scan, startWith } from 'rxjs/internal/operators';
+import { catchError, filter, map, mergeMap, publishLast, refCount, scan, startWith, switchMap, tap } from 'rxjs/internal/operators';
 import { webSocket } from 'rxjs/webSocket';
+import { FormControl } from '@angular/forms';
 
 export interface User {
   admin: boolean;
@@ -120,6 +121,7 @@ export class YGOProService {
   news: Promise<News[]>;
   topics: Promise<any[]>;
   points = new BehaviorSubject<Points | undefined>(undefined);
+  serverForm = new FormControl();
 
   readonly default_options: Options = {
     mode: 1,
@@ -140,33 +142,19 @@ export class YGOProService {
   selectableServers: Server[] = [];
   currentServer: Server;
 
-  reloadSelectableServers(condition: (server: Server) => boolean = () => true) {
-    this.selectableServers = this.servers.filter(s => {
-      if (s.hidden) {
-        return false;
-      }
-      return condition(s);
-    });
-    if(!this.currentServer || !this.selectableServers.includes(this.currentServer)) {
-      this.currentServer = this.selectableServers[0];
-    }
-  }
-
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
-    const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
+    const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(
+      map(apps => apps.find(_app => _app.id === 'ygopro')!),
+      publishLast(),
+      refCount()
+    );
 
-    this.serversPromise = app
-      .pipe(
-        map(_app =>
-          _app.data.servers
-        )
-      )
-      .toPromise();
+    this.serversPromise = app.pipe(map(_app => _app.data.servers)).toPromise();
 
-    this.serversPromise.then((servers) => {
+    this.serversPromise.then(servers => {
       this.servers = servers;
       this.reloadSelectableServers();
-    })
+    });
 
     this.news = app
       .pipe(
@@ -257,6 +245,19 @@ export class YGOProService {
     });
   }
 
+  reloadSelectableServers(condition: (server: Server) => boolean = () => true) {
+    this.selectableServers = this.servers.filter(s => {
+      if (s.hidden) {
+        return false;
+      }
+      return condition(s);
+    });
+    if (!this.currentServer || !this.selectableServers.includes(this.currentServer)) {
+      this.currentServer = this.selectableServers[0];
+      this.serverForm.setValue(this.currentServer);
+    }
+  }
+
   async request_match(arena: string) {
     const data = await this.dialog
       .open(MatchDialogComponent, { data: arena, disableClose: true })
@@ -270,15 +271,14 @@ export class YGOProService {
   create_room(room: Room, host_password: string) {
     const options_buffer = Buffer.alloc(6);
     // 建主密码 https://docs.google.com/document/d/1rvrCGIONua2KeRaYNjKBLqyG9uybs9ZI-AmzZKNftOI/edit
-    options_buffer.writeUInt8(((room.private ? 2 : 1) << 4) |
-      (room.options.duel_rule << 1) |
-      (room.options.auto_death ? 0x1 : 0), 1);
+    options_buffer.writeUInt8(((room.private ? 2 : 1) << 4) | (room.options.duel_rule << 1) | (room.options.auto_death ? 0x1 : 0), 1);
     options_buffer.writeUInt8(
-      room.options.rule << 5 |
-      room.options.mode << 3 |
-      (room.options.no_check_deck ? 1 << 1 : 0) |
-      (room.options.no_shuffle_deck ? 1 : 0)
-      , 2);
+      (room.options.rule << 5) |
+        (room.options.mode << 3) |
+        (room.options.no_check_deck ? 1 << 1 : 0) |
+        (room.options.no_shuffle_deck ? 1 : 0),
+      2
+    );
     options_buffer.writeUInt16LE(room.options.start_lp, 3);
     options_buffer.writeUInt8((room.options.start_hand << 4) | room.options.draw_count, 5);
     let checksum = 0;
@@ -287,7 +287,7 @@ export class YGOProService {
     }
     options_buffer.writeUInt8(checksum & 0xff, 0);
 
-    const secret = this.login.user.external_id % 65535 + 1;
+    const secret = (this.login.user.external_id % 65535) + 1;
     for (let i = 0; i < options_buffer.length; i += 2) {
       options_buffer.writeUInt16LE(options_buffer.readUInt16LE(i) ^ secret, i);
     }
@@ -314,7 +314,7 @@ export class YGOProService {
     }
     options_buffer.writeUInt8(checksum & 0xff, 0);
 
-    const secret = this.login.user.external_id % 65535 + 1;
+    const secret = (this.login.user.external_id % 65535) + 1;
     for (let i = 0; i < options_buffer.length; i += 2) {
       options_buffer.writeUInt16LE(options_buffer.readUInt16LE(i) ^ secret, i);
     }
@@ -333,7 +333,7 @@ export class YGOProService {
     }
     options_buffer.writeUInt8(checksum & 0xff, 0);
 
-    const secret = this.login.user.external_id % 65535 + 1;
+    const secret = (this.login.user.external_id % 65535) + 1;
     for (let i = 0; i < options_buffer.length; i += 2) {
       options_buffer.writeUInt16LE(options_buffer.readUInt16LE(i) ^ secret, i);
     }
@@ -425,6 +425,7 @@ export class YGOProService {
       alert(JSON.stringify({ method: 'share', params: [text] }));
     }
   }
+
   isRoomAvailableToDisplay(r: Room) {
     return (r.arena && this.currentServer && this.currentServer.id === 'tiramisu') || r.server === this.currentServer;
   }
@@ -448,28 +449,33 @@ export class RoomListDataSource extends DataSource<Room> {
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Room[]> {
     this.loading.emit(true);
-    return combineLatest(
-      this.ygopro.servers.filter(s => s.url && (s.custom || s.replay)).map(server => {
-        const url = new URL(server.url!);
-        url.searchParams.set('filter', this.type);
-        // 协议处理
-        return webSocket<Message>(url.toString()).pipe(
-          scan((rooms: Room[], message: Message, index: number) => {
-            switch (message.event) {
-              case 'init':
-                return message.data.map(room => ({ server: server, ...room }));
-              case 'create':
-                return rooms.concat({ server: server, ...message.data });
-              case 'update':
-                Object.assign(rooms.find(room => room.id === message.data.id), message.data);
-                return rooms;
-              case 'delete':
-                return rooms.filter(room => room.id !== message.data);
-            }
-          }, [])
-        );
-      })
-    ).pipe(
+
+    return this.ygopro.serverForm.valueChanges.pipe(
+      this.ygopro.serverForm.value ? startWith(this.ygopro.serverForm.value) : tap(),
+      switchMap(env =>
+        combineLatest(
+          [env].filter(s => s.url && (s.custom || s.replay)).map(server => {
+            const url = new URL(server.url!);
+            url.searchParams.set('filter', this.type);
+            // 协议处理
+            return webSocket<Message>(url.toString()).pipe(
+              scan((rooms: Room[], message: Message, index: number) => {
+                switch (message.event) {
+                  case 'init':
+                    return message.data.map(room => ({ server: server, ...room }));
+                  case 'create':
+                    return rooms.concat({ server: server, ...message.data });
+                  case 'update':
+                    Object.assign(rooms.find(room => room.id === message.data.id), message.data);
+                    return rooms;
+                  case 'delete':
+                    return rooms.filter(room => room.id !== message.data);
+                }
+              }, [])
+            );
+          })
+        )
+      ),
       // 把多个服务器的数据拼接起来
       map((sources: Room[][]) => (<Room[]>[]).concat(...sources)),
       // 筛选一下房间，只扔进去当前房间或者竞技匹配的
@@ -489,10 +495,9 @@ export class RoomListDataSource extends DataSource<Room> {
         })
       ),
       // loading、empty、error
-      filter(rooms => {
+      tap(rooms => {
         this.loading.emit(false);
         this.empty.emit(rooms.length === 0);
-        return true;
       }),
       catchError(error => {
         this.loading.emit(false);

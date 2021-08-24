@@ -8,8 +8,6 @@ import { YGOProService } from '../ygopro.service';
 })
 export class ServerSelectComponent implements OnInit {
 
-  //servers = [{ id: 'mycard', name: '标准' }, { id: 'test', name: '测试' }];
-
   constructor(public ygopro: YGOProService) {
   }
 
