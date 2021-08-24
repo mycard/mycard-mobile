@@ -4,12 +4,13 @@ import { environment } from '../../environments/environment';
 import { LoginService } from '../login.service';
 import { routerTransition } from '../router.animations';
 import { StorageService } from '../storage.service';
-import { YGOProService } from '../ygopro.service';
+import { YGOProService, Server } from '../ygopro.service';
 
 import { HttpClient } from '@angular/common/http';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/internal/operators';
 import { MatDialog } from '@angular/material';
 import { LogoutDialogComponent } from '../logout-dialog/logout-dialog.component';
+
 
 @Component({
   selector: 'app-lobby',
@@ -55,6 +56,10 @@ export class LobbyComponent {
         version_code: parseInt(matched[3])
       };
     }
+  }
+
+  reloadServers(fields: (keyof Server)[]) {
+    this.ygopro.reloadSelectableServers(s => fields.some((field) => !!s[field]));
   }
 
   search(key: string) {

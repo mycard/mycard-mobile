@@ -1,4 +1,4 @@
-import { ErrorHandler, isDevMode, NgModule, Provider } from '@angular/core';
+import { ErrorHandler, NgModule, Provider } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
@@ -41,6 +41,7 @@ import * as Raven from 'raven-js';
 import { DecksComponent } from './decks/decks.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
+import { ServerSelectComponent } from './server-select/server-select.component';
 
 export class RavenErrorHandler implements ErrorHandler {
   handleError(err: any): void {
@@ -69,7 +70,8 @@ if (environment.production) {
     ResultDialogComponent,
     DecksComponent,
     ConfirmDialogComponent,
-    LogoutDialogComponent
+    LogoutDialogComponent,
+    ServerSelectComponent
   ],
   imports: [
     BrowserModule,

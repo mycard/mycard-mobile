@@ -46,16 +46,16 @@
       <br>娱乐匹配
     </button>
   </mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button color="primary" routerLink="/ygopro/rooms">
+  <mat-grid-tile><a mat-raised-button color="primary" (click)='reloadServers(["custom"])' routerLink="/ygopro/rooms">
     <mat-icon>games</mat-icon>
     <br>房间列表</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button color="primary" routerLink="/ygopro/rooms/new">
+  <mat-grid-tile><a mat-raised-button color="primary" (click)='reloadServers(["custom"])' routerLink="/ygopro/rooms/new">
     <mat-icon>&#xe146;</mat-icon><!--add_box-->
     <br>创建房间</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button routerLink="/ygopro/windbot">
+  <mat-grid-tile><a mat-raised-button (click)='reloadServers(["windbot"])' routerLink="/ygopro/windbot">
     <mat-icon>&#xe195;</mat-icon><!-- airplanemode_active -->
     <br>单人模式</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button routerLink="/ygopro/watch">
+  <mat-grid-tile><a mat-raised-button  (click)='reloadServers(["replay"])' routerLink="/ygopro/watch">
     <mat-icon>&#xe417;</mat-icon><!--remove_red_eye-->
     <br>观战</a></mat-grid-tile>
   <!--<mat-grid-tile>-->

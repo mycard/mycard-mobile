@@ -14,7 +14,7 @@ export class WatchComponent implements OnInit {
   @HostBinding('@routerTransition') animation;
 
   displayedColumns = ['mode', 'title', 'users', 'extra'];
-  dataSource = new RoomListDataSource(this.ygopro.servers, 'started');
+  dataSource = new RoomListDataSource(this.ygopro, 'started');
 
   constructor(public login: LoginService, public ygopro: YGOProService, private changeDetector: ChangeDetectorRef) {}
 
