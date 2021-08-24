@@ -1,7 +1,7 @@
 环境: <mat-form-field appearance='standard'>
 <!--  <mat-label>Favorite food</mat-label>-->
-  <mat-select>
-    <mat-option *ngFor='let server of servers' [value]='server.id'>
+  <mat-select [(ngModel)]='ygopro.currentServer'>
+    <mat-option *ngFor='let server of ygopro.selectableServers' [value]='server'>
       {{server.name}}
     </mat-option>
   </mat-select>

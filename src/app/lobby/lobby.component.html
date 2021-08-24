@@ -35,27 +35,27 @@
   <!--<a href="https://accounts.moecube.com/profiles" id="avatar" mat-raised-button [style.background-image]="'url(' + login.user.avatar_url + ')'">{{login.user.username}}</a>-->
   <!--</mat-grid-tile>-->
   <mat-grid-tile>
-    <button mat-raised-button color="primary" (click)="ygopro.request_match('athletic')">
+    <button mat-raised-button color="primary" [disabled]='ygopro.currentServer && ygopro.currentServer.id !== "tiramisu"' (click)="ygopro.request_match('athletic')">
       <mat-icon fontSet="fa" fontIcon="fa-futbol-o"></mat-icon>
       <br>竞技匹配
     </button>
   </mat-grid-tile>
   <mat-grid-tile>
-    <button mat-raised-button color="primary" (click)="ygopro.request_match('entertain')">
+    <button mat-raised-button color="primary" [disabled]='ygopro.currentServer && ygopro.currentServer.id !== "tiramisu"' (click)="ygopro.request_match('entertain')">
       <mat-icon>toys</mat-icon>
       <br>娱乐匹配
     </button>
   </mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button color="primary" routerLink="/ygopro/rooms">
+  <mat-grid-tile><a mat-raised-button color="primary" [disabled]='ygopro.currentServer && !ygopro.currentServer.custom' routerLink="/ygopro/rooms">
     <mat-icon>games</mat-icon>
     <br>房间列表</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button color="primary" routerLink="/ygopro/rooms/new">
+  <mat-grid-tile><a mat-raised-button color="primary" [disabled]='ygopro.currentServer && !ygopro.currentServer.custom' routerLink="/ygopro/rooms/new">
     <mat-icon>&#xe146;</mat-icon><!--add_box-->
     <br>创建房间</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button routerLink="/ygopro/windbot">
+  <mat-grid-tile><a mat-raised-button [disabled]='ygopro.currentServer && !ygopro.currentServer.windbot' routerLink="/ygopro/windbot">
     <mat-icon>&#xe195;</mat-icon><!-- airplanemode_active -->
     <br>单人模式</a></mat-grid-tile>
-  <mat-grid-tile><a mat-raised-button routerLink="/ygopro/watch">
+  <mat-grid-tile><a mat-raised-button [disabled]='ygopro.currentServer && !ygopro.currentServer.replay' routerLink="/ygopro/watch">
     <mat-icon>&#xe417;</mat-icon><!--remove_red_eye-->
     <br>观战</a></mat-grid-tile>
   <!--<mat-grid-tile>-->

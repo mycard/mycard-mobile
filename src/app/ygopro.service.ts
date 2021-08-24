@@ -119,7 +119,6 @@ export interface Points {
 export class YGOProService {
   news: Promise<News[]>;
   topics: Promise<any[]>;
-  windbot: Promise<string[]>;
   points = new BehaviorSubject<Points | undefined>(undefined);
 
   readonly default_options: Options = {
@@ -136,27 +135,28 @@ export class YGOProService {
     time_limit: 180,
     auto_death: false
   };
-  readonly servers: Server[] = [
-    {
-      id: 'tiramisu',
-      url: 'wss://tiramisu.mycard.moe:7923',
-      address: 'tiramisu.mycard.moe',
-      port: 7911,
-      custom: true,
-      replay: true
-    },
-    {
-      id: 'tiramisu-athletic',
-      url: 'wss://tiramisu.mycard.moe:8923',
-      address: 'tiramisu.mycard.moe',
-      port: 8911,
-      custom: false,
-      replay: true
-    }
-  ];
+  serversPromise: Promise<Server[]>;
+  servers: Server[] = [];
+  selectableServers: Server[] = [];
+  currentServer: Server;
 
   constructor(private login: LoginService, private http: HttpClient, private dialog: MatDialog, private storage: StorageService) {
     const app = this.http.get<App[]>('https://sapi.moecube.com:444/apps.json').pipe(map(apps => apps.find(_app => _app.id === 'ygopro')!), publishLast(), refCount());
+
+    this.serversPromise = app
+      .pipe(
+        map(_app =>
+          _app.data.servers
+        )
+      )
+      .toPromise();
+
+    this.serversPromise.then((servers) => {
+      this.servers = servers;
+      this.selectableServers = servers.filter(s => !s.hidden);
+      this.currentServer = this.selectableServers[0];
+    })
+
     this.news = app
       .pipe(
         map(_app =>
@@ -171,7 +171,7 @@ export class YGOProService {
         )
       )
       .toPromise();
-    this.windbot = app.pipe(map(_app => (<YGOProData>_app.data).windbot['zh-CN'])).toPromise();
+    // this.windbot = app.pipe(map(_app => (<YGOProData>_app.data).windbot['zh-CN'])).toPromise();
 
     this.topics = this.http
       .get<TopResponse>('https://ygobbs.com/top/quarterly.json')
@@ -291,7 +291,7 @@ export class YGOProService {
     //     body: `房间密码是 ${this.host_password}, 您的对手可在自定义游戏界面输入密码与您对战。`
     //   });
     // }
-    this.join(password, this.servers[0]);
+    this.join(password, this.currentServer);
   }
 
   join_room(room: Room) {
@@ -329,14 +329,14 @@ export class YGOProService {
 
     const name = options_buffer.toString('base64') + password.replace(/\s/, String.fromCharCode(0xfeff));
 
-    this.join(name, this.servers[0]);
+    this.join(name, this.currentServer);
   }
 
   async join_windbot(name?: string) {
     if (!name) {
-      name = sample(await this.windbot);
+      name = sample(this.currentServer.windbot!);
     }
-    return this.join('AI#' + name, this.servers[0]);
+    return this.join('AI#' + name, this.currentServer);
   }
 
   join(password: string, server: Server) {
@@ -427,7 +427,7 @@ export class RoomListDataSource extends DataSource<Room> {
   empty = new EventEmitter();
   error = new EventEmitter();
 
-  constructor(private servers: Server[], private type = 'waiting') {
+  constructor(private ygopro: YGOProService, private type = 'waiting') {
     super();
   }
 
@@ -435,7 +435,7 @@ export class RoomListDataSource extends DataSource<Room> {
   connect(): Observable<Room[]> {
     this.loading.emit(true);
     return combineLatest(
-      this.servers.map(server => {
+      this.ygopro.servers.filter(s => s.url && (s.custom || s.replay)).map(server => {
         const url = new URL(server.url!);
         url.searchParams.set('filter', this.type);
         // 协议处理
@@ -458,10 +458,10 @@ export class RoomListDataSource extends DataSource<Room> {
     ).pipe(
       // 把多个服务器的数据拼接起来
       map((sources: Room[][]) => (<Room[]>[]).concat(...sources)),
-
+      // 筛选一下房间，只扔进去当前房间或者竞技匹配的
       // 房间排序
       map(rooms =>
-        sortBy(rooms, room => {
+        sortBy(rooms.filter(r => r.arena || r.server === this.ygopro.currentServer), room => {
           if (room.arena === 'athletic') {
             return 0;
           } else if (room.arena === 'entertain') {

@@ -15,7 +15,7 @@ export class RoomListComponent implements OnInit {
   @HostBinding('@routerTransition') animation;
 
   displayedColumns = ['title', 'users', 'mode', 'extra'];
-  dataSource = new RoomListDataSource(this.ygopro.servers.filter(server => server.custom!));
+  dataSource = new RoomListDataSource(this.ygopro);
 
   constructor(public login: LoginService, public ygopro: YGOProService, private changeDetector: ChangeDetectorRef) {}
 

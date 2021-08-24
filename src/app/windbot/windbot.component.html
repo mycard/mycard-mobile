@@ -6,7 +6,7 @@
     <mat-icon mat-list-icon>&#xe195;</mat-icon><!-- airplanemode_active -->
     <h4 mat-line>随机</h4>
   </mat-list-item>
-  <mat-list-item *ngFor="let windbot of ygopro.windbot | async" (click)="ygopro.join_windbot(windbot)">
+  <mat-list-item *ngFor="let windbot of (ygopro.currentServer ? ygopro.currentServer.windbot : [])" (click)="ygopro.join_windbot(windbot)">
     <img mat-list-icon [src]="login.avatar(windbot)">
     <h4 mat-line>{{windbot}}</h4>
   </mat-list-item>

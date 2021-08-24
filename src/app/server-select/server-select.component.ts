@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { YGOProService } from '../ygopro.service';
 
 @Component({
   selector: 'app-server-select',
@@ -7,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServerSelectComponent implements OnInit {
 
-  servers = [{ id: 'mycard', name: '标准' }, { id: 'test', name: '测试' }];
+  //servers = [{ id: 'mycard', name: '标准' }, { id: 'test', name: '测试' }];
 
-  constructor() {
+  constructor(public ygopro: YGOProService) {
   }
 
   ngOnInit() {
