@@ -28,8 +28,8 @@ export class ResultDialogComponent implements OnInit {
     const index = this.last.usernamea === this.login.user.username ? 'a' : 'b';
 
     if (this.last.isfirstwin && this.result === 'win') {
-      this.dp = this.format(this.last[`pt${index}`] - 4, this.last[`pt${index}_ex`]);
-      this.firstWin = this.format(4);
+      this.dp = this.format(this.last[`pt${index}`] - 5, this.last[`pt${index}_ex`]);
+      this.firstWin = this.format(5);
     } else {
       this.dp = this.format(this.last[`pt${index}`], this.last[`pt${index}_ex`]);
     }
