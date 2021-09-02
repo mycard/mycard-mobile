@@ -89,78 +89,36 @@
 
 <mat-card *ngIf="ygopro.points | async as points">
   <mat-grid-list id="points" cols="4" rowHeight="20px">
-    <mat-grid-tile>
-      <dt>竞技排名</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.arena_rank}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>娱乐排名</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.exp_rank}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>竞技胜率</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.athletic_wl_ratio}}%</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>经验</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.exp}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>胜场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.athletic_win}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>胜场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.entertain_win}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>负场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.athletic_lose}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>负场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.entertain_lose}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>平局</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.athletic_draw}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>平局</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.entertain_draw}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>总场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.athletic_all}}</dd>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dt>总场</dt>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <dd>{{points.entertain_all}}</dd>
-    </mat-grid-tile>
+    <mat-grid-tile><dt>D.P</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.pt}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>经验</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.exp}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技胜率</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.athletic_wl_ratio}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技排名</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.arena_rank}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技胜场</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.athletic_win}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技总场</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.athletic_all}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技负场</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.athletic_lose}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>娱乐排名</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.exp_rank}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>竞技平局</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.athletic_draw}}</dd></mat-grid-tile>
+
+    <mat-grid-tile><dt>娱乐总场</dt></mat-grid-tile>
+    <mat-grid-tile><dd>{{points.entertain_all}}</dd></mat-grid-tile>
+
   </mat-grid-list>
 </mat-card>
 <mat-card *ngFor="let item of ygopro.news | async" class="example-card">
