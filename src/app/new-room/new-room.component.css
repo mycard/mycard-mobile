@@ -23,3 +23,8 @@ form {
 #actions {
   text-align: right;
 }
+
+.mat-select-panel {
+  max-height: none;
+  min-width: none !important;
+}
