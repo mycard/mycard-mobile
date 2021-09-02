@@ -5,7 +5,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <form (submit)="search(searchControl.value)">
-    <input type="search" placeholder="卡片搜索" name="key" [matAutocomplete]="auto" [formControl]="searchControl">
+    <input type="search" placeholder="输入卡名搜索..." name="key" [matAutocomplete]="auto" [formControl]="searchControl">
 
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let card of suggestion | async" [value]="card" (onSelectionChange)="search(card)">

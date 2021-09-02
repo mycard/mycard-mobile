@@ -63,8 +63,8 @@ export class LobbyComponent {
   }
 
   search(key: string) {
-    const url = new URL('http://www.ourocg.cn/S.aspx');
-    url.searchParams.set('key', key);
+    const url = new URL('https://ygocdb.com/');
+    url.searchParams.set('search', key);
     open(url.toString());
   }
 
