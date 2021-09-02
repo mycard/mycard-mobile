@@ -24,7 +24,7 @@ form {
   text-align: right;
 }
 
-.mat-select-panel {
+::ng-deep .mat-select-panel {
   max-height: none;
   min-width: none !important;
 }
