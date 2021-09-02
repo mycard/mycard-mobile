@@ -23,9 +23,10 @@
     <mat-select placeholder="卡片允许" name="rule" [(ngModel)]="room.options.rule" required>
       <mat-option [value]="0">OCG</mat-option>
       <mat-option [value]="1">TCG</mat-option>
-      <mat-option [value]="2">OCG & TCG</mat-option>
-      <mat-option [value]="3">专有卡禁止</mat-option>
-      <mat-option [value]="4">简体中文</mat-option>
+      <mat-option [value]="2">简体中文</mat-option>
+      <mat-option [value]="3">自制卡</mat-option>
+      <mat-option [value]="4">专有卡禁止</mat-option>
+      <mat-option [value]="5">所有卡片</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="full-width">
@@ -36,7 +37,7 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field class="full-width">
-    <mat-select placeholder="决斗规则" name="mode" [(ngModel)]="room.options.duel_rule" required>
+    <mat-select placeholder="决斗规则" name="duel_rule" [(ngModel)]="room.options.duel_rule" required>
       <mat-option [value]="1">大师规则</mat-option>
       <mat-option [value]="2">大师规则2</mat-option>
       <mat-option [value]="3">大师规则3</mat-option>

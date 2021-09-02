@@ -47,7 +47,12 @@
     <ng-container matColumnDef="extra">
       <mat-header-cell *matHeaderCellDef>额外选项</mat-header-cell>
       <mat-cell *matCellDef="let room">
-        <span *ngIf="room.options.rule != ygopro.default_options.rule">{{{'0': 'OCG', '1': 'TCG', '2': 'O/T', '3': '专有卡禁止', '4': '简体中文'}[room.options.rule]}}</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 0" title="允许OCG独有卡，不允许TCG独有卡">OCG</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 1" title="允许TCG独有卡，不允许OCG独有卡">TCG</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 2" title="只允许简体中文版已经发售的卡">简中</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 3" title="只允许自制卡">自制卡</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 4" title="不允许OCG或TCG独有卡">专有卡禁止</span>
+        <span *ngIf="room.options.rule != ygopro.default_options.rule && room.options.rule == 5" title="可以任意使用OCG或TCG卡">所有卡片</span>
         <span *ngIf="room.options.start_lp != ygopro.default_options.start_lp">{{room.options.start_lp}} LP</span>
         <span *ngIf="room.options.start_hand != ygopro.default_options.start_hand">{{room.options.start_hand}} 初始</span>
         <span *ngIf="room.options.draw_count != ygopro.default_options.draw_count">{{room.options.draw_count}} 抽卡</span>
